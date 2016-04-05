@@ -17,7 +17,11 @@ io = StringIO.new
 
 begin
   require 'rails'
-  ::Rails.logger = ::Logger.new(io)
+  if Rails::VERSION::MAJOR >= 4
+    ::Rails.logger = ::ActiveSupport::Logger.new(io)
+  else
+    ::Rails.logger = ::Logger.new(io)
+  end
 rescue LoadError
   require 'activesupport'
   RAILS_ENV            = 'test'
